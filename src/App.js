@@ -9,11 +9,14 @@ import {
 } from "@material-ui/core";
 import InfoBox from "./InfoBox";
 import Map from "./Map";
+import Table from "./Table";
+import { sortData } from "./util";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("WorldWide");
   const [countryInfo, setCountryInfo] = useState({});
+  const [tableData, setTableData] = useState([]);
 
   //shows world wide data
   useEffect(() => {
@@ -33,9 +36,14 @@ function App() {
             name: country.country, //united state , france
             value: country.countryInfo.iso2, // UK , FR, USA
           }));
+
+          const sortedData = sortData(data);
+          setTableData(sortedData);
+
           setCountries(countries);
         });
     };
+
     getCountriesData();
   }, []);
 
@@ -94,6 +102,7 @@ function App() {
         <CardContent>
           {/* table  */}
           <h3>Live Cases by Country</h3>
+          <Table countries={tableData}/>
           {/* graph  */}
           <h3>WorldWide new Cases</h3>
         </CardContent>
