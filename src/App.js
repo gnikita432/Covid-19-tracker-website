@@ -12,12 +12,15 @@ import Map from "./Map";
 import Table from "./Table";
 import { sortData } from "./util";
 import LineGraph from "./LineGraph";
+import "leaflet/dist/leaflet.css";
 
 function App() {
   const [countries, setCountries] = useState([]);
   const [country, setCountry] = useState("WorldWide");
   const [countryInfo, setCountryInfo] = useState({});
   const [tableData, setTableData] = useState([]);
+  const [mapCenter, setMapCenter] = useState({ lat: 34.80746, lng: -40.4796 });
+  const [mapZoom, setMapZoom] = useState(3);
 
   //shows world wide data
   useEffect(() => {
@@ -62,6 +65,8 @@ function App() {
       .then((data) => {
         setCountry(countryCode);
         setCountryInfo(data);
+        setMapCenter([data.countryInfo.lat, data.countryInfo.long]);
+        setMapZoom(4);
       });
 
     console.log(countryInfo);
@@ -96,7 +101,9 @@ function App() {
           <InfoBox title="Deaths" total={countryInfo.deaths} cases={countryInfo.todayDeaths} />
         </div>
         {/* map  */}
-        <Map />
+        <Map
+        center={mapCenter}
+        zoom={mapZoom} />
       </div>
 
       <Card className="app__right">
